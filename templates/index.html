@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FireSafe - Risk Assessment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="stepper-container">
+        <div class="stepper">
+            <div class="step active">
+                <p>1. Get Informed</p>
+            </div>
+            <div class="step">
+                <p>2. Get Weather Fire Risk</p>
+            </div>
+            <div class="step">
+                <p>3. Get Geographic Fire Risk</p>
+            </div>
+            <div class="step">
+                <p>4. Get Assessment</p>
+            </div>
+            <div class="step">
+                <p>5. Extra Features</p>
+            </div>
+        </div>
+
+        <!-- Step Content -->
+        <div class="step-content">
+            <!-- Content for "Get Informed" -->
+            <div class="content">
+                <div class="container">
+                    <!-- Project Introduction -->
+                    <section id="project-introduction">
+                        <h2>Project Introduction</h2>
+                        <p>
+                            Welcome to FireSafe, a revolutionary project aimed at enhancing urban fire management through the power of drones and AI. Our mission is to create safer urban communities by proactively identifying and mitigating fire risks.
+                        </p>
+                    </section>
+
+                    <!-- About Us -->
+                    <section id="about-us">
+                        <h2>About Us</h2>
+                        <p>
+                            We are a team of dedicated researchers and developers, passionate about leveraging technology to address real-world challenges. This project is a culmination of our efforts to blend cutting-edge AI with drone technology to make urban areas safer from fire hazards.
+                        </p>
+                    </section>
+
+                    <!-- What We Offer -->
+                    <section id="offerings">
+                        <h2>What We Offer</h2>
+                        <ul>
+                            <li><strong>Urban Mapping:</strong> High-resolution mapping of urban areas using drones.</li>
+                            <li><strong>AI Analysis:</strong> Advanced AI models to process and classify point cloud data, identifying potential fire hazards.</li>
+                            <li><strong>Fire Spread Analysis:</strong> Comprehensive analysis to identify potential fire spread zones.</li>
+                            <li><strong>Proactive Measures:</strong> Recommendations for preventive measures to reduce fire risks.</li>
+                        </ul>
+                    </section>
+
+                    <!-- How It Works -->
+                    <section id="how-it-works">
+                        <h2>How It Works</h2>
+                        <ol>
+                            <li>Input your urban location of interest.</li>
+                            <li>Our system generates an optimized drone flight route.</li>
+                            <li>Fly your drone along the route, capturing point cloud data.</li>
+                            <li>Upload the data to our platform.</li>
+                            <li>Our AI processes the data, classifying the urban landscape and identifying risks.</li>
+                            <li>Receive an in-depth report on potential fire spread zones and suggested preventive actions.</li>
+                        </ol>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Content for "Get Weather Fire Risk" -->
+            <div class="content">
+                <form action="/" method="post">
+                    <input type="text" name="location" placeholder="Enter location">
+                    <div class="btn" onclick="this.parentNode.submit();">
+                        <span>Check Risk</span>
+                        <div class="dot"></div>
+                    </div>
+                </form>
+                
+                <!-- Display Weather Data and Fire Risk -->
+                {% if weather_data %}
+                <div class="weather-results">
+                    <h2>Risk Score: <span class="large-number">{{ calculated_risk_score }}</span></h2>
+                    <h3>Fire Risk Level: {{ fire_risk }}</h3>
+                    <h3>Weather Data:</h3>
+                    <ul>
+                        <li>Average Surface Temperature: {{ weather_data['Temperature'] }}°C</li>
+                        <li>Average Wind Speed: {{ weather_data['Wind Speed'] }} km/h</li>
+                        <li>Average Air Temperature: {{ weather_data['Temperature'] }}°C</li>
+                        <li>Average Humidity: {{ weather_data['Relative Humidity'] }}%</li>
+                        <li>Minimum Surface Temperature: {{ weather_data['Minimum Temperature'] }}°C</li>
+                        <li>Minimum Air Temperature: {{ weather_data['Minimum Temperature'] }}°C</li>
+                        <li>Maximum Surface Temperature: {{ weather_data['Maximum Temperature'] }}°C</li>
+                        <li>Maximum Air Temperature: {{ weather_data['Maximum Temperature'] }}°C</li>
+                        <li>Maximum Wind Speed: {{ weather_data['Wind Gust'] }} km/h</li>
+                        <li>Minimum Humidity: {{ weather_data['Relative Humidity'] }}%</li> <!-- This is an assumption as the exact field for Min Humidity wasn't provided -->
+                        <li>Precipitation: {{ weather_data['Precipitation'] }} mm</li>
+                    </ul>
+                    
+                    <h3>Fire Risk: {{ fire_risk }}</h3>
+                    <p>Calculated Risk Score: {{ calculated_risk_score }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+
+            <!-- Content for "Get Geographic Fire Risk" -->
+            <div class="content">
+                <!-- File Upload Section -->
+                <div class="file-upload-section">
+                    <input type="file" id="pointCloudFile">
+                    <div class="btn">
+                        <span>Upload and Analyze</span>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+
+                <!-- iFrame with Meshes Checklist -->
+                <div class="iframe-section">
+                    <iframe src="path_to_your_3D_viewer" width="100%" height="500px"></iframe>
+                    <div class="meshes-checklist">
+                        <h3>Meshes:</h3>
+                        <label class="checkbox-container">Base Mesh
+                            <input type="checkbox" id="baseMesh" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Building Density
+                            <input type="checkbox" id="buildingDensity" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Slope and Aspect
+                            <input type="checkbox" id="slopeAndAspect" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Materials
+                            <input type="checkbox" id="materials" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Vegetation Distance
+                            <input type="checkbox" id="vegetationDistance" checked>
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- Content for "Get Assessment" -->
+            <div class="content">
+                <div class="container">
+                    <h1 id="overallScore">85</h1>
+                    <p>Overall Fire Risk Score</p>
+                    <div class="details">
+                        <p>Fire Weather Risk: <span id="weatherRisk">45</span></p>
+                        <p>Terrain & Building Risk: <span id="terrainRisk">40</span></p>
+                    </div>
+                    <div class="measures">
+                        <label class="checkbox-container">Install fire-resistant roofing
+                            <input type="checkbox" id="roofing" data-score="-5">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Maintain a vegetation-free zone
+                            <input type="checkbox" id="vegetation" data-score="-10">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Install sprinkler systems
+                            <input type="checkbox" id="sprinklers" data-score="-8">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Design clear escape routes
+                            <input type="checkbox" id="escapeRoutes" data-score="-4">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Place fire extinguishers in key areas
+                            <input type="checkbox" id="fireExtinguishers" data-score="-7">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Install fire-resistant doors
+                            <input type="checkbox" id="fireDoors" data-score="-5">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Have fire escape ladders for multi-story buildings
+                            <input type="checkbox" id="fireLadders" data-score="-4">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Store flammable materials safely
+                            <input type="checkbox" id="flammableStorage" data-score="-6">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Regularly check electrical installations
+                            <input type="checkbox" id="electricalSafety" data-score="-5">
+                            <span class="checkmark"></span>
+                        </label>
+                        <label class="checkbox-container">Conduct regular fire drills
+                            <input type="checkbox" id="fireDrills" data-score="-3">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div id="riskBar"></div>
+                </div>
+            </div>
+
+            <!-- Content for "Extra Features" -->
+            <div class="content">
+                <p>Details about extra features.</p>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
+
